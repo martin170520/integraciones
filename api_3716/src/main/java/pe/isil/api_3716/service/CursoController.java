@@ -40,8 +40,6 @@ public class CursoController {
         return cursoRepository.save(curso);
     }
 
-
-
     @PutMapping("/update/{id}")
     public Curso update(@RequestBody Curso curso, @PathVariable("id") Integer id){
         //1. obtenemos el registro del curso de la bases de datos por el id

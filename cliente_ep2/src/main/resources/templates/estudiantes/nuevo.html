@@ -15,32 +15,37 @@
 <div class="container mt-4">
     <div class="row justify-content-center-center">
         <div class="col-lg-4 col-md-6">
-            <h1>Nuevo Estudiante</h1>
+            <h1 class="mb-3">Nuevo Estudiante</h1>
 
             <form th:action="@{'/estudiantes/store'}" th:object="${estudiante}" method="post">
                 <div class="mb-3">
                     <label class="form-label" >Nombre</label>
-                    <input type="text" class="form-control" th:field="*{nombres}" >
+                    <input type="text" class="form-control" th:field="*{nombres}" th:errorclass="is-invalid">
+                    <div th:errors="*{nombres}" th:if="${#fields.hasErrors('nombres')}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label" >Apellidos</label>
-                    <input type="text" class="form-control" th:field="*{apellidos}" >
+                    <input type="text" class="form-control" th:field="*{apellidos}" th:errorclass="is-invalid">
+                    <div th:errors="*{apellidos}" th:if="${#fields.hasErrors('apellidos')}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label" >DNI</label>
-                    <input type="text" class="form-control" th:field="*{dni}" >
+                    <input type="text" class="form-control" th:field="*{dni}" th:errorclass="is-invalid">
+                    <div th:errors="*{dni}" th:if="${#fields.hasErrors('dni')}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label" >Correo:</label>
-                    <input type="text" class="form-control" th:field="*{correo}" >
+                    <input type="text" class="form-control" th:field="*{correo}" th:errorclass="is-invalid">
+                    <div th:errors="*{correo}" th:if="${#fields.hasErrors('correo')}" class="invalid-feedback"></div>
                 </div>
 
                <div class="mb-3">
                     <label class="form-label" >Id carrera:</label>
-                    <input type="text" class="form-control" th:field="*{id_carrera}" >
+                    <input type="text" class="form-control" th:field="*{id_carrera}" th:errorclass="is-invalid">
+                    <div th:errors="*{id_carrera}" th:if="${#fields.hasErrors('id_carrera')}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="text-end">
