@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,9 +49,17 @@ public class EstudianteController {
 
 
     @PostMapping("/store")
-    public String store(Model model , Estudiante estudiante , RedirectAttributes ra)
+    public String store(@Validated Estudiante estudiante, BindingResult binding, Model model, RedirectAttributes ra)
     {
+        // Trae el estudiante validado, binding result detecta si hay errores
+
+        if (binding.hasErrors()){
+            model.addAttribute("estudiante", estudiante);
+            return "estudiantes/nuevo";
+        }
+
         //Usar el restTamplate para llamar el metodo add y registrar un nuevo estudiante
+
         restTemplate.postForEntity(ADD_ESTUDIANTE_API, estudiante, Estudiante.class);
 
         ra.addFlashAttribute("msgExito", "Estudiante registrado exitosamente");
@@ -67,10 +77,15 @@ public class EstudianteController {
     }
 
     @PostMapping("/editar/{id}")
-    public String actualizar(Model model ,@PathVariable("id") Integer id, Estudiante estudiante, RedirectAttributes ra)
+    public String actualizar(@PathVariable("id") Integer id, @Validated Estudiante estudiante, Model model, BindingResult binding, RedirectAttributes redirectAttributes)
     {
+        if (binding.hasErrors()){
+            model.addAttribute("estudiante", estudiante);
+            return "estudiantes/editar";
+        }
+
         restTemplate.put(UPDATE_ESTUDIANTE_API, estudiante, id);
-        ra.addFlashAttribute("msgExito", "Estudiante actualizado correctamente");
+        redirectAttributes.addFlashAttribute("msgExito", "Estudiante actualizado correctamente");
         return  "redirect:/estudiantes";
     }
 
