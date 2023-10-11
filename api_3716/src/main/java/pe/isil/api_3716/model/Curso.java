@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import java.time.LocalTime;
 
@@ -20,8 +22,11 @@ public class Curso {
     private Integer id;
 
     private Integer codigo;
+
     private String nombre;
+
     private Integer creditos;
+
     private LocalTime horas;
 
 }
