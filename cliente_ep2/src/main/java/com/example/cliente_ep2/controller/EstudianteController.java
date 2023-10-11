@@ -31,6 +31,7 @@ public class EstudianteController {
     private static final String UPDATE_ESTUDIANTE_API = "http://localhost:8090/api_rest/estudiantes/update/{id}";
     private static final String DELETE_ESTUDIANTE_API = "http://localhost:8090/api_rest/estudiantes/delete/{id}";
     private static final String FIND_BY_EMAIL_API = "http://localhost:8090/api_rest/estudiantes/estudianteByEmail?correo={correo}";
+    private static final String FIND_BY_DNI_API = "http://localhost:8090/api_rest/estudiantes/estudianteByDni?dni={dni}";
 
     @GetMapping("")
     public String index(Model model){
@@ -69,6 +70,15 @@ public class EstudianteController {
         if (estudianteToFind.getBody() != null) {
             if (estudianteToFind.getBody().getCorreo().equals(estudiante.getCorreo())) {
                 binding.rejectValue("correo", "EmailAlreadyExists");
+                return "estudiantes/nuevo";
+            }
+        }
+        ResponseEntity<Estudiante> estudianteToFind2 = restTemplate
+                .getForEntity(FIND_BY_DNI_API, Estudiante.class, estudiante.getDni());
+
+        if (estudianteToFind2.getBody() != null) {
+            if (estudianteToFind2.getBody().getDni().equals(estudiante.getDni())) {
+                binding.rejectValue("dni", "DniAlreadyExists");
                 return "estudiantes/nuevo";
             }
         }
