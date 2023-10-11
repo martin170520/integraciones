@@ -29,6 +29,11 @@ public class EstudianteController {
 
     }
 
+    @GetMapping("/estudianteByEmail")
+    public Optional<Estudiante> getEstudiante(@RequestParam String correo) {
+        return estudianteRepository.findByCorreo(correo);
+    }
+
 
     //UODATE
     @PutMapping("/update/{id}")

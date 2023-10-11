@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/estudiantes")
 public class EstudianteController {
@@ -28,6 +30,7 @@ public class EstudianteController {
     private static final String ADD_ESTUDIANTE_API = "http://localhost:8090/api_rest/estudiantes/add";
     private static final String UPDATE_ESTUDIANTE_API = "http://localhost:8090/api_rest/estudiantes/update/{id}";
     private static final String DELETE_ESTUDIANTE_API = "http://localhost:8090/api_rest/estudiantes/delete/{id}";
+    private static final String FIND_BY_EMAIL_API = "http://localhost:8090/api_rest/estudiantes/estudianteByEmail?correo={correo}";
 
     @GetMapping("")
     public String index(Model model){
@@ -59,13 +62,24 @@ public class EstudianteController {
             return "estudiantes/nuevo";
         }
 
+
+        ResponseEntity<Estudiante> estudianteToFind = restTemplate
+                .getForEntity(FIND_BY_EMAIL_API, Estudiante.class, estudiante.getCorreo());
+
+        if (estudianteToFind.getBody() != null) {
+            if (estudianteToFind.getBody().getCorreo().equals(estudiante.getCorreo())) {
+                binding.rejectValue("correo", "EmailAlreadyExists");
+                return "estudiantes/nuevo";
+            }
+        }
+
         //Usar el restTamplate para llamar el metodo add y registrar un nuevo estudiante
 
         restTemplate.postForEntity(ADD_ESTUDIANTE_API, estudiante, Estudiante.class);
 
         ra.addFlashAttribute("msgExito", "Estudiante registrado exitosamente");
 
-        return "redirect:/estudiantes"; //redireccionamos a la ruta /estudiantes
+        return "redirect:/estudiantes"; //redireccionamos a la ruta /estudiantes*/
 
     }
 
@@ -78,16 +92,16 @@ public class EstudianteController {
     }
 
     @PostMapping("/editar/{id}")
-    public String actualizar(@PathVariable("id") Integer id, @Validated Estudiante estudiante, Model model, BindingResult binding, RedirectAttributes redirectAttributes)
+    public String actualizar(@PathVariable("id") Integer id, @Validated Estudiante estudiante, BindingResult binding, RedirectAttributes ra, Model model)
     {
 
         if (binding.hasErrors()){
             model.addAttribute("estudiante", estudiante);
-            return "estudiantes/editar/" + id;
+            return "estudiantes/editar";
         }
 
         restTemplate.put(UPDATE_ESTUDIANTE_API, estudiante, id);
-        redirectAttributes.addFlashAttribute("msgExito", "Estudiante actualizado correctamente");
+        ra.addFlashAttribute("msgExito", "Estudiante actualizado correctamente");
         return  "redirect:/estudiantes";
     }
 
