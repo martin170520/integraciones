@@ -43,6 +43,7 @@ public class EstudianteController {
     @GetMapping("/nuevo") //para que me muestri un nuevo espacion vacio
     public String nuevo(Model model)
     {
+
         model.addAttribute("estudiante", new Estudiante());
         return "estudiantes/nuevo"; //retornamos  la vista del nuevo HTML
     }
@@ -79,9 +80,10 @@ public class EstudianteController {
     @PostMapping("/editar/{id}")
     public String actualizar(@PathVariable("id") Integer id, @Validated Estudiante estudiante, Model model, BindingResult binding, RedirectAttributes redirectAttributes)
     {
+
         if (binding.hasErrors()){
             model.addAttribute("estudiante", estudiante);
-            return "estudiantes/editar";
+            return "estudiantes/editar/" + id;
         }
 
         restTemplate.put(UPDATE_ESTUDIANTE_API, estudiante, id);

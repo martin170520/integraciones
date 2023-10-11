@@ -22,23 +22,19 @@ public class Estudiante {
 
     @NotNull
     @NotBlank
-    @Size(min = 2, max = 50)
     private String nombres;
 
     @NotNull
     @NotBlank
-    @Size(min = 2, max = 50)
     private String apellidos;
 
-    @NotNull
+
     @Size(min = 8, max = 8)
     private String dni;
 
     @Email
     private String correo;
 
-    @NotNull
-    @NotBlank
     private Integer id_carrera;
 
 }

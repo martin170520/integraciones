@@ -4,6 +4,8 @@ import lombok.Data;
 
 import javax.validation.constraints.*;
 
+
+
 @Data
 public class Estudiante {
 
@@ -19,6 +21,8 @@ public class Estudiante {
     @Size(min = 2, max = 50)
     private String apellidos;
 
+    @NotBlank
+    @NotNull
     @Size(min = 8, max = 8)
     private String dni;
 
@@ -27,7 +31,6 @@ public class Estudiante {
     @Email
     private String correo;
 
-    @Positive
     private Integer id_carrera;
 
 
